@@ -4,7 +4,7 @@
 - [x] Sensor verification
 - [ ] Interrupt service routines
 	- [x] encoder interrupt service routine
-	- [ ] systick interrupt
+	- [x] systick interrupt
 	- [ ] ADC interrupt service routines
 - [ ] Robot movement
 	- [x] PID controller implementation
