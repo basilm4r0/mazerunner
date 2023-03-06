@@ -1,34 +1,26 @@
-#include <util/atomic.h>
 #include "systick.h"
 #include "simplepid.h"
 #include "motors.h"
 #include "encoders.h"
+#include "config.h"
 
-// How many motors
-#define MAZE_DIMENSION 18.2
-#define NMOTORS 2
-#define PULSES_PER_CM 14.43
-#define EIGHTH_TURN_CM 8
-
-// Pins
-const int enca[] = {2,3}; // only pins 2 and 3 are external interrupt capable on arduino uno
-const int encb[] = {12,13};
-const int pwm[] = {10,5};
-const int in1[] = {6,7};
-const int in2[] = {11,4};
+// Motor Pins
+extern const int enca[NMOTORS]; // only pins 2 and 3 are external interrupt capable on arduino uno
+extern const int encb[NMOTORS];
+extern const int pwm[NMOTORS]; // blue:10
+extern const int in1[NMOTORS];
+extern const int in2[NMOTORS]; // green:11
 
 // Globals
-long prevT = 0;
-volatile long posi[] = {0,0};
 long prevMillis = 0;
 int counter = 0;
-int target[NMOTORS] = {0,0};
+long target[NMOTORS] = {0,0};
 
 // PID class instances
-SimplePID pid[NMOTORS];
+extern SimplePID pid[NMOTORS];
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   setup_systick();
 
   for(int k = 0; k < NMOTORS; k++){
@@ -38,69 +30,59 @@ void setup() {
     pinMode(in1[k],OUTPUT);
     pinMode(in2[k],OUTPUT);
 
-    pid[k].setParams(2,0.3,-0.01,255); // 1,0.3,-0.01
+    pid[k].setParams(5,0.1,0.1,255); // 1,0.3,-0.01
   }
 
   attachInterrupt(digitalPinToInterrupt(enca[0]),readEncoder<0>,RISING);
   attachInterrupt(digitalPinToInterrupt(enca[1]),readEncoder<1>,RISING);
+
+  Serial.println("starting forward profile");
+  // forward.start(MAZE_DIMENSION*PULSES_PER_CM, 8*PULSES_PER_CM, 8*PULSES_PER_CM, 24*PULSES_PER_CM);
+  // rotation.start(EIGHTH_TURN_CM*PULSES_PER_CM, 8*PULSES_PER_CM, 0, 4*PULSES_PER_CM);
 }
 
 void loop() {
 
+
   long currMillis = millis();
-  if (currMillis - prevMillis >= 1000) {
+  if (currMillis - prevMillis >= 3000) {
     if (counter == 0) {
-      target[0] += int(MAZE_DIMENSION * PULSES_PER_CM);
-      target[1] += int(MAZE_DIMENSION * PULSES_PER_CM);
-      Serial.println("go forward");
+      // rotation.start(-EIGHTH_TURN_CM*PULSES_PER_CM, 8*PULSES_PER_CM, 0, 4*PULSES_PER_CM);
+      forward.start(2*MAZE_DIMENSION*PULSES_PER_CM, 24*PULSES_PER_CM, 0, 24*PULSES_PER_CM);
+      Serial.println("turn");
       prevMillis = currMillis;
-      counter++;
+      counter = 1;
     } else if (counter == 1) {
-      //target[0] -= int(EIGHTH_TURN_CM * PULSES_PER_CM);
-      target[1] += int(2 * EIGHTH_TURN_CM * PULSES_PER_CM);
+      rotation.start(2*EIGHTH_TURN_CM*PULSES_PER_CM, 24*PULSES_PER_CM, 0, 24*PULSES_PER_CM);
+      // forward.start(-MAZE_DIMENSION*PULSES_PER_CM, 24*PULSES_PER_CM, 0, 24*PULSES_PER_CM);
       prevMillis = currMillis;
       counter--;
       Serial.println("turn");
     }
   }
-  // time difference
-  long currT = micros();
-  float deltaT = ((float) (currT - prevT))/( 1.0e6 );
-  prevT = currT;
-
-  // Read the position in an atomic block to avoid a potential misread
-  long pos[NMOTORS];
-  ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-    for(int k = 0; k < NMOTORS; k++){
-      pos[k] = posi[k];
-    }
-  }
-
-  // loop through the motors
-  for(int k = 0; k < NMOTORS; k++){
-    int pwr, dir;
-    // evaluate the control signal
-    pid[k].evalu(pos[k],target[k],deltaT,pwr,dir);
-    // signal the motor
-    setMotor(dir,pwr,pwm[k],in1[k],in2[k]);
-    Serial.print("pwr");
-    Serial.print(k);
-    Serial.print(":");
-    Serial.print(pwr);
-    Serial.print(",");
-  }
 
   //Serial plotter graphing
-  Serial.print("target0:");
-  Serial.print(target[0]);
-  Serial.print(",");
-  Serial.print("pos0:");
-  Serial.print(pos[0]);
-  Serial.print(",");
-  Serial.print("target1:");
-  Serial.print(target[1]);
-  Serial.print(",");
-  Serial.print("pos1:");
-  Serial.print(pos[1]);
-  Serial.println();
+  // Serial.print("target0:");
+  // Serial.print(target[0]);
+  // Serial.print(",");
+  // Serial.print("pos0:");
+  // Serial.print(pos[0]);
+  // Serial.print(",");
+  // Serial.print("target1:");
+  // Serial.print(target[1]);
+  // Serial.print(",");
+  // Serial.print("pos1:");
+  // Serial.print(pos[1]);
+  // Serial.println();
+}
+
+float measureDistance(int echoPin, int trigPin) {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin,LOW);
+  long duration = pulseIn(echoPin, HIGH);
+  float distance = duration * 0.0344 / 2;
+  return distance;
 }

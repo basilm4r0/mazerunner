@@ -1,3 +1,5 @@
+#include "config.h"
+#include <Arduino.h>
 #ifndef SIMPLEPID_H
 #define SIMPLEPID_H
 
@@ -47,5 +49,7 @@ class SimplePID{
   }
 
 };
+
+float time_difference();
 
 #endif

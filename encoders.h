@@ -1,8 +1,10 @@
+#include "config.h"
 #ifndef ENCODERS_H
 #define ENCODERS_H
 
 extern const int encb[];
-extern volatile long posi[];
+extern volatile long posi[NMOTORS];
+extern long pos[NMOTORS];
 
 template <int j>
 void readEncoder(){
@@ -14,5 +16,7 @@ void readEncoder(){
     posi[j]--;
   }
 }
+
+extern void update_position();
 
 #endif
