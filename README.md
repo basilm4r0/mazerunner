@@ -2,11 +2,11 @@
 
 
 - [x] Sensor verification
-- [ ] Interrupt service routines
+- [x] Interrupt service routines
 	- [x] encoder interrupt service routine
 	- [x] systick interrupt
-	- [ ] ADC interrupt service routines
-- [ ] Robot movement
+- [x] Robot movement
 	- [x] PID controller implementation
-	- [ ] Movement profiles
+	- [x] Movement profiles
+- [ ] Object avoidance
 - [ ] Maze solving
