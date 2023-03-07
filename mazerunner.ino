@@ -30,8 +30,12 @@ void setup() {
     pinMode(in1[k],OUTPUT);
     pinMode(in2[k],OUTPUT);
 
-    pid[k].setParams(5,0.1,0.1,255); // 1,0.3,-0.01
+    pid[k].setParams(kp,ki,kd,255); // 1,0.3,-0.01
   }
+
+  // TCCR2B = TCCR2B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
+  bitClear(TCCR1B, CS11);
+  bitSet(TCCR1B, CS10);
 
   attachInterrupt(digitalPinToInterrupt(enca[0]),readEncoder<0>,RISING);
   attachInterrupt(digitalPinToInterrupt(enca[1]),readEncoder<1>,RISING);
@@ -60,20 +64,6 @@ void loop() {
       Serial.println("turn");
     }
   }
-
-  //Serial plotter graphing
-  // Serial.print("target0:");
-  // Serial.print(target[0]);
-  // Serial.print(",");
-  // Serial.print("pos0:");
-  // Serial.print(pos[0]);
-  // Serial.print(",");
-  // Serial.print("target1:");
-  // Serial.print(target[1]);
-  // Serial.print(",");
-  // Serial.print("pos1:");
-  // Serial.print(pos[1]);
-  // Serial.println();
 }
 
 float measureDistance(int echoPin, int trigPin) {

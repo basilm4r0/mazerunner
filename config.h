@@ -8,6 +8,9 @@
 #define PULSES_PER_CM 16
 #define EIGHTH_TURN_CM 7.1
 #define WHEEL_PERIMETER_ERROR -0.1
+#define kp 5
+#define ki 0.1
+#define kd 0.1
 
 // Sensor pins
 #define irPin1 8
