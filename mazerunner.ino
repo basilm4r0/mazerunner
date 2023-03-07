@@ -30,7 +30,7 @@ void setup() {
     pinMode(in1[k],OUTPUT);
     pinMode(in2[k],OUTPUT);
 
-    pid[k].setParams(kp,ki,kd,255); // 1,0.3,-0.01
+    pid[k].setParams(kP,kI,kD,255); // 1,0.3,-0.01
   }
 
   // TCCR2B = TCCR2B & B11111000 | B00000001; // for PWM frequency of 31372.55 Hz
