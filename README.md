@@ -8,5 +8,7 @@
 - [x] Robot movement
 	- [x] PID controller implementation
 	- [x] Movement profiles
-- [ ] Object avoidance
-- [ ] Maze solving
+- [x] Object avoidance
+- [x] Maze solving
+	- [x] left hand rule
+	- [x] finite state machine path optimization
