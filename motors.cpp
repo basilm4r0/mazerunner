@@ -37,21 +37,21 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2){
 }
 
 // loop through the motors
-void update_motors() {
+void update_motors(int cross_track_error, float error_factor) {
   int pwr, dir, target;
   float deltaT = time_difference();
   for (int k = 0; k < NMOTORS; k++) {
-    target = (forward.position()+(2*k-1)*rotation.position());
+    target = forward.position()+(2*k-1)*(rotation.position() + error_factor*cross_track_error);
     // evaluate the control signal
     pid[k].evalu(pos[k], (1+k * WHEEL_PERIMETER_ERROR) * target, deltaT, pwr, dir);
     // signal the motor
     setMotor(dir,pwr,pwm[k],in1[k],in2[k]);
-    Serial.print("pos ");
-    Serial.print(k);
-    Serial.print(":");
-    Serial.print(target);
-    Serial.print(",");
+    // Serial.print("pos ");
+    // Serial.print(k);
+    // Serial.print(":");
+    // Serial.print(pos[k]);
+    // Serial.print(",");
   }
-  Serial.println();
+  // Serial.println();
 
 }

@@ -141,7 +141,7 @@ class Profile {
       return;
     }
     float delta_v = m_acceleration * LOOP_INTERVAL;
-    float remaining = fabsf(m_final_position) - fabsf(m_position);
+    float remaining = fabsf(m_final_position - m_position);
     if (m_state == CS_ACCELERATING) {
       if (remaining < get_braking_distance()) {
         m_state = CS_BRAKING;

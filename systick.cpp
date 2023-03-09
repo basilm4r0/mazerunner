@@ -3,8 +3,10 @@
 #include "motors.h"
 #include "profile.h"
 #include "config.h"
-// #include "sensors.h"
+#include "sensors.h"
 #include <Arduino.h>
+
+extern int cross_track_error;
 
 void setup_systick() {
   bitClear(TCCR2A, WGM20);
@@ -49,7 +51,7 @@ ISR(TIMER2_COMPA_vect, ISR_NOBLOCK) {
   update_position();
   forward.update();
   rotation.update();
-  update_motors();
+  update_motors(cross_track_error, ERROR_FACTOR);
   // g_cross_track_error = update_wall_sensors();
   // g_steering_adjustment = calculate_steering_adjustment(g_cross_track_error);
   // update_motor_controllers(g_steering_adjustment);

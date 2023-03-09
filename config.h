@@ -5,22 +5,27 @@
 // Constants
 #define MAZE_DIMENSION 25
 #define NMOTORS 2
-#define PULSES_PER_CM 16
-#define EIGHTH_TURN_CM 7.1
-#define WHEEL_PERIMETER_ERROR -0.1
-#define kP 5
-#define kI 0.1
-#define kD 0.1
+#define PULSES_PER_CM 15.43
+#define EIGHTH_TURN_CM 7
+#define WHEEL_PERIMETER_ERROR -0.0025 // previous: -0.02
+#define ERROR_FACTOR 3
+
+// longest path size
+#define PATH_SIZE 5
+
+// PID controller coefficients
+#define kP 50    // previous: 5
+#define kI 0.1  // previous: 0.1
+#define kD 50  // previous: 0.1
 
 // Sensor pins
 #define irPin1 8
 #define irPin2 5
+#define irPinF A3
 #define trigPin1 A5
 #define echoPin1 A4
-#define trigPin2 A3
-#define echoPin2 A2
-#define trigPin3 A1
-#define echoPin3 A0
+#define trigPin2 A1
+#define echoPin2 A0
 
 // Motor Pins
 const int enca[NMOTORS] = {2,3}; // only pins 2 and 3 are external interrupt capable on arduino uno

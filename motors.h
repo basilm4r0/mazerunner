@@ -8,6 +8,6 @@
 
 void setMotor(int dir, int pwmVal, int pwm, int in1, int in2);
 
-void update_motors();
+void update_motors(int cross_track_error, float error_factor);
 
 #endif
