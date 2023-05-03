@@ -14,9 +14,9 @@
 #define PATH_SIZE 5
 
 // PID controller coefficients
-#define kP 50    // previous: 5
+#define kP 30    // previous: 50
 #define kI 0.1  // previous: 0.1
-#define kD 50  // previous: 0.1
+#define kD 30  // previous: 50
 
 // Sensor pins
 #define irPin1 8

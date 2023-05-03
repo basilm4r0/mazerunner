@@ -69,14 +69,14 @@ void setup() {
 
 void loop() {
   getUltrasDistances();
-  if (distance_left < 5)
+  if (distance_left < 4)
     error1--;
-  if (distance_right < 5)
+  if (distance_right < 4)
     error1++;
-  if (distance_left > 10 && distance_left < 20)
-    error2++;
-  if (distance_right > 10 && distance_right < 20)
-    error2--;
+  // if (distance_left > 10 && distance_left < 20)
+  //   error2++;
+  // if (distance_right > 10 && distance_right < 20)
+  //   error2--;
   cross_track_error = error1 + 0.75*error2;
   int irPins[3];
   irPins[0] = digitalRead(irPin1);
