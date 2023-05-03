@@ -6,41 +6,35 @@ Installation
 To use this project, you will need to have the following:
 
     - Arduino Programming Capable Computer
-    - Micromouse robot hardware
+    - Arduino compatible microcontroller
+    - Two DC motors
     - Motor driver
-    - Ultrasonic sensors
-    - IR sensors
+    - Two Ultrasonic sensors
+    - Three IR sensors
+    - Battery
 
 ## Usage
 
 To use the micromouse maze solver, follow these steps:
 
-    1. Build the micromouse robot hardware according to the instructions provided.
+    1. Build the micromouse robot
     2. Connect the motor driver, ultrasonic sensors, and IR sensors to the microcontroller.
-    3. Upload the code to the microcontroller using the Arduino IDE.
-    4. Place the micromouse robot at the entrance of the maze and watch as it navigates to the center!
+    3. Configure the pins of the devices you've connected in the code as well as the wheel dimensions etc.
+    4. Upload the code to the microcontroller using the Arduino IDE.
+    5. Test the robot and tune its parameters in the configuration file.
+    6. Let the robot solve the maze.
 
 ## Features
 
     - The micromouse robot uses ultrasonic sensors to detect obstacles in its path and IR sensors to detect the walls of the maze.
     - The robot uses an algorithm to navigate through the maze, making decisions on which path to take based on the sensor readings.
-    - The code is fully customizable, allowing you to adjust the maze-solving algorithm and sensor readings to fit your specific needs.
+    - The code is modular, allowing you to adjust the maze-solving algorithm and sensor readings to fit your specific needs.
 
 ## Contributing
 
 If you would like to contribute to this project, please feel free to submit a pull request. We welcome all contributions and feedback!
 
-## Mazerunner project tasks
+## Attributions
 
-
-- [x] Sensor verification
-- [x] Interrupt service routines
-	- [x] encoder interrupt service routine
-	- [x] systick interrupt
-- [x] Robot movement
-	- [x] PID controller implementation
-	- [x] Movement profiles
-- [x] Object avoidance
-- [x] Maze solving
-	- [x] left hand rule
-	- [x] finite state machine path optimization
+Credit for the motion profiles and systick timer interrupt goes to UKMARS. Many thanks for their open source contributions.
+Credit for the PID controller code goes to Curio Res. Many thanks to her as well.
